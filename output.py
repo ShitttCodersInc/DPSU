@@ -41,6 +41,7 @@ def radius_output(time_list: List[float], radius_list: List[List[float]]) -> Non
 
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
+    plt.title('Траектория движения в 3D координатах')
     ax.plot(x, y, z, label='parametric curve')
     ax.scatter([x[0]], [y[0]], [z[0]], 'b.')
     ax.scatter([x[-1]], [y[-1]], [z[-1]], 'r.')
@@ -48,6 +49,7 @@ def radius_output(time_list: List[float], radius_list: List[List[float]]) -> Non
     plt.show()
 
     plt.grid()
+    plt.title('Проекции вектора r - x(t),y(t),z(t)')
     plt.xlabel("Время, сек")
     plt.ylabel("Расстояние, км")
     plt.plot(time_list, x, label='x(t)')
@@ -58,6 +60,7 @@ def radius_output(time_list: List[float], radius_list: List[List[float]]) -> Non
     plt.show()
 
     plt.grid()
+    plt.title('Модуль вектора r')
     plt.xlabel("Время, сек")
     plt.ylabel("Расстояние, км")
     plt.plot(time_list, radius_module, label='|r(t)|')
@@ -87,6 +90,7 @@ def omega_output(time_list: List[float], omega: List[List[float]]) -> None:
     omega_module = [np.linalg.norm(r) for r in omega]
 
     plt.grid()
+    plt.title('Проекции вектора ω - ω_x(t), ω_Y(t), ω_Z(t)')
     plt.xlabel("Время, сек")
     plt.ylabel("Угловая скорость, рад/с")
     plt.plot(time_list, x, label='ω_x(t)')
@@ -97,6 +101,7 @@ def omega_output(time_list: List[float], omega: List[List[float]]) -> None:
     plt.show()
 
     plt.grid()
+    plt.title('Модуль вектора ω(t)')
     plt.xlabel("Время, сек")
     plt.ylabel("Угловая скорость, км")
     plt.plot(time_list, omega_module, label='|ω(t)|')
@@ -126,6 +131,7 @@ def OMEGA_output(time_list: List[float], OMEGA: List[List[float]]) -> None:
     OMEGA_module = [np.linalg.norm(r) for r in OMEGA]
 
     plt.grid()
+    plt.title('Проекции вектора Ω - Ω_x(t), Ω_Y(t), Ω_Z(t)')
     plt.xlabel("Время, сек")
     plt.ylabel("Угловая скорость, рад/с")
     plt.plot(time_list, x, label='Ω_x(t)')
@@ -136,6 +142,7 @@ def OMEGA_output(time_list: List[float], OMEGA: List[List[float]]) -> None:
     plt.show()
 
     plt.grid()
+    plt.title('Модуль вектора Ω(t)')
     plt.xlabel("Время, сек")
     plt.ylabel("Угловая скорость, рад/с")
     plt.plot(time_list, OMEGA_module, label='|Ω(t)|')

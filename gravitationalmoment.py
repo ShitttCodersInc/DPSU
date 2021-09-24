@@ -23,7 +23,7 @@ def gravity_moment(R: float, quaternion: List[float], r_j2000: List[float]) -> L
     ])
 
     moment = np.cross(np.array(unit_vector), product_J_on_unit_vect)
-    moment *= (3 * EARTH_GRAVITATIONAL_PARAMETER) / (2 * R ** 3)
+    moment *= (3 * EARTH_GRAVITATIONAL_PARAMETER) / (2 * (R ** 3))
 
     return list(moment)
 
@@ -34,8 +34,8 @@ def unit_vector_SSK(quaternion: List[float], r_j2000: List[float]) -> List[float
     if len(r_j2000) != 3:
         raise Exception('r_j2000 len must be equal 3')
 
-    normalized_r_j2000 = np.array(r_j2000) / np.linalg.norm(r_j2000)
-    normalized_r_j2000 = list(normalized_r_j2000)
+    normalized_r_j2000 = list(np.array(r_j2000) / np.linalg.norm(r_j2000))
+
     conf_quaternion = qtrn.confugate(quaternion=quaternion)
     result = qtrn.multiply_quaternions(quat1=conf_quaternion, quat2=[.0] + normalized_r_j2000)
     result = qtrn.multiply_quaternions(quat1=result, quat2=quaternion)

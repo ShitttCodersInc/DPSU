@@ -2,6 +2,8 @@
 - 8
 - 11
 - 12
+
+* Универсальный метод рунге кутта
 """
 import numpy as np
 from data import *
@@ -24,9 +26,10 @@ def R_omega(res_moment: List[float], omega: List[float], OMEGA: List[float], sig
     _omega = np.array(omega).reshape(3, 1)
     _OMEGA = np.array(OMEGA).reshape(3, 1)
     _signal = np.array(signal).reshape(3, 1)
+
     # Вычисляю поэтапно, раскрывая скобки
     result = J_matr.dot(_omega) + J_ef_matr.dot(_OMEGA)
-    result = _res_moment - np.cross(list(_omega.reshape(3, )), list(result.reshape(3, ))).reshape(3, 1) - _signal
+    result = _res_moment - np.cross(_omega.reshape(3, ), result.reshape(3, )).reshape(3, 1) + _signal
     result = J_matr_inv.dot(result.reshape(3, 1))
     result = result.reshape(3, )
     return list(result)
@@ -38,7 +41,7 @@ def R_OMEGA(signal: List[float]) -> List[float]:
 
     J_ef_matr_inv = np.linalg.inv(np.array(J_ef))
     _signal = np.array(signal).reshape(3, 1)
-    result = np.dot(J_ef_matr_inv, _signal).reshape(3,)
+    result = np.dot(J_ef_matr_inv, _signal).reshape(3, )
     return list(result)
 
 
@@ -67,7 +70,7 @@ def R_A(r_j2000: List[float], t: float) -> List[float]:
 
     _r_j2000 = np.array(r_j2000).reshape(3, 1)
     _r_j2000_mod = np.linalg.norm(_r_j2000)
-    A = (- EARTH_GRAVITATIONAL_PARAMETER / _r_j2000_mod ** 3) * _r_j2000
+    A = (- EARTH_GRAVITATIONAL_PARAMETER / (_r_j2000_mod ** 3)) * _r_j2000
 
     A_grav = grav.gravitational_acceleration(r_j2000=r_j2000, t=t)
     A_sun = sun.sun_acceleration(r_j2000=r_j2000, t=t)
@@ -79,4 +82,15 @@ def R_A(r_j2000: List[float], t: float) -> List[float]:
     A += A_sun
 
     return A
+
+
 # -----------------------------------------------------------------------------
+
+
+def rungekutta4(f, h, x, y):
+    k1 = f(x=x, y=y)
+    k2 = f(x=x + 0.5 * h, y=y + 0.5 * h * k1)
+    k3 = f(x=x + 0.5 * h, y=y + 0.5 * h * k2)
+    k4 = f(x=x + h, y=y + h * k3)
+    dy = (h / 6.) * (k1 + 2 * k2 + 2 * k3 + k4)
+    return dy
